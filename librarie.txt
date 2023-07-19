@@ -1,0 +1,176 @@
+use test1
+
+db.librarie.insertMany([
+{
+	nume_carte:'LOTR',
+	gen: 'fictiune',
+	limba: 'engleza',
+	autori : ['Tolkien'],
+	pret_ron: 30,
+	numar_exemplare: 15
+},
+{
+	nume_carte:'Silmarillion',
+	gen: 'fictiune',
+	limba: 'engleza',
+	autori : ['Tolkien'],
+	pret_ron: 40,
+	numar_exemplare: 10
+},
+{
+	nume_carte:'Dracula',
+	gen: 'horror',
+	limba: 'romana',
+	autori : ['Bram Stoker'],
+	pret_ron: 35,
+	numar_exemplare: 17
+},
+{
+	nume_carte:'The King in Yellow',
+	gen: 'horror',
+	limba: 'engleza',
+	autori : ['Robert Chambers'],
+	pret_ron: 60,
+	numar_exemplare: 7
+},
+{
+	nume_carte:'General SS',
+	gen: 'romana',
+	limba: 'romana',
+	autori : ['Sven Hassel'],
+	pret_ron: 45,
+	numar_exemplare: 6
+},
+{
+	nume_carte:'Moarte si viscol',
+	gen: 'istoric',
+	limba: 'romana',
+	autori : ['Sven Hassel'],
+	pret_ron: 45,
+	numar_exemplare: 8
+},
+{
+	nume_carte:'Berserk vol.1',
+	gen: 'manga',
+	limba: 'engleza',
+	autori : ['Kentaro Miura'],
+	pret_ron: 300,
+	numar_exemplare: 6
+},
+{
+
+	nume_carte:'Berserk vol.2',
+	gen: 'manga',
+	limba: 'engleza',
+	autori : ['Kentaro Miura'],
+	pret_ron: 300,
+	numar_exemplare: 4
+},
+{
+
+	nume_carte:'Hellsing vol.3',
+	gen: 'manga',
+	limba: 'engleza',
+	autori : ['Kohta Hirano'],
+	pret_ron: 300,
+	numar_exemplare: 4
+},
+{
+	nume_carte:'Batman: City of Bane',
+	gen: 'comics',
+	limba: 'engleza',
+	autori : ['Tom King', 'Mikel Janin'],
+	pret_ron: 250,
+	numar_exemplare: 2
+},
+{
+	nume_carte:'Deathstroke Vol.1',
+	gen: 'comics',
+	limba: 'engleza',
+	autori : ['Tony Daniel'],
+	pret_ron: 80,
+	numar_exemplare: 5
+},
+{
+	nume_carte:'Venom',
+	gen: 'comics',
+	limba: 'engleza',
+	autori : ['David Michelinie', 'Mark Bagley' , 'Ron Lin'],
+	pret_ron: 90,
+	numar_exemplare: 6
+},
+{
+	nume_carte:'Antrenamentul Condamnatilor',
+	gen: 'sport',
+	limba: 'romana',
+	autori : ['Paul Wade'],
+	pret_ron: 50,
+	numar_exemplare: 12
+},
+{
+	nume_carte:'Portile de foc',
+	gen: 'istoric',
+	limba: 'romana',
+	autori : ['Steven Pressfield'],
+	pret_ron: 30,
+	numar_exemplare: 10
+},
+{
+	nume_carte:'Mitologie nordica',
+	gen: 'fictiune',
+	limba: 'engleza',
+	autori : ['Neil Gaiman'],
+	pret_ron: 45,
+	numar_exemplare: 6
+},
+{
+	nume_carte:'Batman: Whatever Happened to the Caped Crusader?',
+	gen: 'comics',
+	limba: 'engleza',
+	autori : ['Neil Gaiman'],
+	pret_ron: 165,
+	numar_exemplare: 9
+},
+{
+	nume_carte:'The Illustrated Good Omens',
+	gen: 'fictiune',
+	limba: 'engleza',
+	autori : ['Terry Pratchett','Neil Gaiman'],
+	pret_ron: 225,
+	numar_exemplare: 3
+},
+{
+	nume_carte:'Deathstroke RIP',
+	gen: 'comics',
+	limba: 'engleza',
+	autori : ['Christopher Priest'],
+	pret_ron: 80,
+	numar_exemplare: 13
+},
+{
+	nume_carte:'Deathstroke Vol.4',
+	gen: 'comics',
+	limba: 'engleza',
+	autori : ['Tony Daniel'],
+	pret_ron: 120,
+	numar_exemplare: 3
+},
+{
+	nume_carte:'Divina Comedie. Infernul',
+	gen: 'poezie',
+	limba: 'engleza',
+	autori : ['Dante Aligheiri'],
+	pret_ron: 150,
+	numar_exemplare: 2
+}
+])
+
+db.librarie.find()
+
+db.librarie.aggregate([{$unwind: '$autori'},{$match: {gen: 'fictiune',autori: 'Tolkien'}},{$group: {_id: 'numar_carti',disponibile: {$sum: '$numar_exemplare'}}}])
+
+db.librarie.aggregate([{$unwind: '$autori'},{$match: {autori: 'Neil Gaiman'}},{$sort: {"pret_ron": -1}},{$limit: 2}])
+
+db.librarie.aggregate([ { $match: { gen: 'fictiune' } },{$project:{_id: 0,nume_carte:1, pret:{$gt: ['pret_ron', 50 ]}}}])
+
+db.librarie.distinct('gen')
